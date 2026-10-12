@@ -121,8 +121,8 @@ local-workbench/
 - Produces `create_app(config: AppConfig, *, model_factory: ModelFactory | None = None) -> FastAPI`；ModelFactory 签名为 `(ModelSettings, str | None) -> ModelClient`，后续Task 7实现。GET `/api/health` 返回 `{status: 'ok'}`。
 - Produces contracts.py中的FileSelection/TaskCreate/TaskRecord/TaskEvent/TaskStatus、WorkspaceRecord/FileRecord/SourceRecord/ArtifactRecord、ModelSettings/ModelRequest/ModelEvent、Report/各Preview以及内部dataclass；后续任务完善对应类型字段，不另定义重名类型。Produces `WorkbenchError(code: str, message: str, status_code: int)`，HTTP 错误形式 `{error: {code, message}}`。
 
-- [ ] **Step 1：准备本项目环境。** 确认目录没有待保留产品代码后，在此目录初始化 Git；建立 `.venv`，声明并安装后端基线依赖及测试 extras；生成完整版本锁。忽略 .venv、.local-workbench、node_modules、dist、samples/outputs、缓存与 .env；不忽略示例输入和锁文件。
-- [ ] **Step 2：写失败测试。** `test_health_and_local_origin` 断言正常 health 为 200、恶意 Host/Origin 被拒绝；`test_contract_rejects_unknown_fields` 断言 TaskCreate 未知字段/非法模式失败；`test_limits_and_public_aliases` 断言限额精确值和 JSON 的 workspaceId/fileId。
+- [x] **Step 1：准备本项目环境。** 确认目录没有待保留产品代码后，在此目录初始化 Git；建立 `.venv`，声明并安装后端基线依赖及测试 extras；生成完整版本锁。忽略 .venv、.local-workbench、node_modules、dist、samples/outputs、缓存与 .env；不忽略示例输入和锁文件。
+- [x] **Step 2：写失败测试。** `test_health_and_local_origin` 断言正常 health 为 200、恶意 Host/Origin 被拒绝；`test_contract_rejects_unknown_fields` 断言 TaskCreate 未知字段/非法模式失败；`test_limits_and_public_aliases` 断言限额精确值和 JSON 的 workspaceId/fileId。
 
   代表性断言（config和有效TaskCreate输入由conftest提供）：
   ```python
@@ -132,9 +132,11 @@ local-workbench/
   with pytest.raises(ValidationError):
       TaskCreate.model_validate({**valid_task_input, "executeShell": True})
   ```
-- [ ] **Step 3：确认失败。** Run `.\.venv\Scripts\python.exe -m pytest backend/tests/test_app.py backend/tests/test_contracts.py -q`；Expected 因导入/路由未实现失败，不应是环境依赖损坏。
-- [ ] **Step 4：实现并复测。** 实现上述入口、契约和异常/本机请求检查；CLI 支持 `python -m workbench --host 127.0.0.1 --port 8765`。运行同一测试，Expected PASS；启动检查 `/api/health`，无模型配置也能启动。
-- [ ] **Step 5：提交。** `git add .gitignore backend docs`；`git commit -m "chore: initialize local workbench service and contracts"`。
+- [x] **Step 3：确认失败。** Run `.\.venv\Scripts\python.exe -m pytest backend/tests/test_app.py backend/tests/test_contracts.py -q`；Expected 因导入/路由未实现失败，不应是环境依赖损坏。
+- [x] **Step 4：实现并复测。** 实现上述入口、契约和异常/本机请求检查；CLI 支持 `python -m workbench --host 127.0.0.1 --port 8765`。运行同一测试，Expected PASS；启动检查 `/api/health`，无模型配置也能启动。
+- [x] **Step 5：提交。** `git add .gitignore backend docs`；`git commit -m "chore: initialize local workbench service and contracts"`。
+
+**2026-10-12 执行说明：** Task 1 已按用户本次范围验收并提交（e03589f）；无行为契约、ModelFactory 和文件处理依赖延后，Windows 原生台账替代 Bash 辅助脚本。完整裁决、实际命令与验证见 [T001](../../development/tasks/T001-2026-10-12-backend-scaffold.md)，Git 交付见 T002。
 
 ### Task 2：SQLite、事件事务和历史恢复
 

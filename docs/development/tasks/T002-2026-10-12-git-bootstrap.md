@@ -6,11 +6,11 @@
 |---|---|
 | 任务编号 | T002 |
 | 类型 | 支撑任务 / 仓库交付，不计作业务里程碑完成 |
-| 状态 | 进行中 |
+| 状态 | 已完成 |
 | 创建日期 | 2026-10-12 |
 | 开始日期 | 2026-10-12 |
 | 最近更新 | 2026-10-12 |
-| 完成日期 | 未完成 |
+| 完成日期 | 2026-10-12 |
 | 最近回写 | 2026-10-12 |
 | 总文档 | [开发总文档](../master-plan.md) |
 | 依赖 | T001 验证与审查；GitHub 认证 |
@@ -28,12 +28,23 @@
 
 ## 实际文件与验证
 
-`.gitignore` 已补充忽略规则；README、AGENTS、提交与推送待完成。远端一致性尚未核验。
+实际新增/修改 `.gitignore`、`.gitattributes`、README、AGENTS 和开发文档；保留远端 LICENSE。Git 忽略环境、状态、密钥、产物与缓存；脚本保持 UTF-8 BOM，仓库约定 Windows 脚本 CRLF、Python/Markdown LF。
+
+### 2026-10-12 / 审查、合入与推送
+
+- 代码提交：`e03589fac6f7d6165f4b9dc7959926dc9861dcae`，信息 `chore: initialize local workbench backend scaffold`。
+- 独立审查：Critical 0、Important 0；只读复测 41 passed；源码包测试资源 Minor 延后，详见 T001。
+- `git fetch origin` 后确认远端为当前历史祖先；`git switch main`、`git merge --ff-only chore/backend-scaffold` 成功。
+- main 完整复测：41 passed、0 skipped、1 上游弃用提示。
+- `git push origin main` 成功，从 e7384d4 快进至 e03589f；无 force push，初始历史和许可证保留。
+- `git rev-parse HEAD` 与 `git ls-remote origin refs/heads/main` 完整 SHA 相同，工作区干净。
+- `git ls-files` 不含环境、执行缓存、构建输出、状态或 .env；`git diff --check` 通过。
+- 今日回写作为后续独立 docs 提交正常推送；最终提交编号以远端 main 为准，避免在文档中记录自身递归变化的哈希。
 
 ## 遗留与接续
 
-待 T001 完成后审查、提交、推送并记录结果；禁止强制覆盖远端历史。
+无范围内阻塞。后续功能从远端 main 和总文档接续，保持普通推送和历史整合。
 
 ## 回写摘要
 
-2026-10-12：状态进行中；初始化完成，提交及远端交付未完成。
+2026-10-12：已完成，完成日期为本日；初始化、保留历史、审查、main 快进合入及代码推送验收完成。支撑任务不推进业务里程碑；最终开发记录由 T003 回写。

@@ -33,6 +33,13 @@
 2. 保留用户指定目录，在工作分支实施；不另建工作树。目录尚无产品代码，远端历史已接入；代价是后续并行开发需要再建立隔离工作树。
 3. 只实现当前有行为的 FileSelection、TaskCreate、TaskStatus、TaskEvent，及 FastAPI/Pydantic/Uvicorn 依赖；ModelFactory、持久化、报告和处理库随相应任务加入。代价是后续需扩展契约和锁文件。
 4. Windows 下用 PowerShell 和 Python 完成执行台账与审查包整理，替代技能的 Bash 辅助脚本；保留相同任务身份、基线、裁决和验证证据。代价是手工核验这些字段。
+5. 审查中暂不判断 junction、工作区切换和输入快照；当前没有文件服务，归 Tasks 3/8。代价是这些任务验收前不能声称有文件边界保证。
+6. 暂不判断文件编码、混合列、Excel 公式文字和导出；归 Tasks 3/5/6。代价是当前不能处理或导出文件。
+7. 暂不判断模型分片、调用校验、超时和去重；归 Tasks 7/8。代价是当前没有 AI 执行能力。
+8. 暂不判断取消和产物发布竞态；归 Tasks 6/8。代价是当前没有任务取消或产物发布能力。
+9. 暂不判断 SQLite、SSE、重启恢复和历史下载；归 Tasks 2/8–10。代价是当前没有任务历史与恢复能力。
+10. 审查确认 ModelFactory、未来契约和依赖延后合理，沿用第 3 条。代价是后续集成要扩展脚手架。
+11. 不将尚未发生的 Git 推送和最终回写纳入固定提交审查；由执行者在交付阶段核验。代价是独立审查不覆盖后续交付动作，需本地与远端 HEAD 一致证据。
 
 ## 开发记录
 
@@ -106,6 +113,13 @@
 ## 遗留与接续
 
 范围内 F01–F04 已验收；Git 交付和独立审查见 T002。Starlette 的 HTTPX TestClient 弃用提示属于后续测试依赖维护，未隐藏，也未影响真实 HTTP 验证。
+
+### 独立审查与延后的小项
+
+- 2026-10-12：独立 fresh-context 审查覆盖 `e7384d4..e03589f`，只读复测 41 passed / 0 skipped；Critical 0、Important 0、Minor 1，结论 Ready to merge: Yes。
+- Minor：setuptools 自动生成的 sdist 包含 `tests/test_*.py`，却不包含 conftest.py 和仓库启动脚本，因此源码包附带测试不能独立复现仓库测试。当前 Git 克隆安装、wheel 服务和仓库测试均正常。
+- 按本次 Git 脚手架范围延后此项；发布源码包前应补齐测试资源，或明确排除测试。未把这一项当作已修复。
+- 合入 main 后完整复测仍为 41 passed，1 条已记录的上游弃用提示。
 
 下一次新增 T004 实现 SQLite、事件事务和历史恢复，先读总文档、计划 Task 2、config.py/contracts.py/app.py；在 contracts.py 增加持久化记录，按任务建立失败测试。
 
