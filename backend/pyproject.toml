@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools==80.9.0", "wheel==0.45.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "local-workbench"
+version = "0.1.0"
+description = "Local file, data and document workbench backend"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "fastapi==0.135.2",
+    "pydantic==2.12.5",
+    "uvicorn==0.42.0",
+]
+
+[project.optional-dependencies]
+dev = ["httpx==0.28.1", "pytest==8.4.2", "build==1.2.2.post1"]
+
+[project.scripts]
+workbench = "workbench.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["workbench*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-markers"
